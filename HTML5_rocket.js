@@ -15,6 +15,7 @@ init = function()
 
     //Images
     var rocketImg = new Image();
+    var spaceImg = new Image();
 
     //Setting up canvas
     var canV = document.getElementById('c');
@@ -49,6 +50,7 @@ init = function()
     var loadImages = function()
     {
         rocketImg.src = "images/rocket.png";
+        spaceImg.src = "images/space.png";
     }
     
     var loopGame = function()
@@ -57,6 +59,7 @@ init = function()
     
         clear();
         ican.save();
+        ican.drawImage(spaceImg, 0, 0);
         ican.translate(rocketx/2, rockety/2);
         ican.rotate(rotation * Math.PI / 180);
         ican.drawImage(rocketImg, -50, -50, 100, 100);
