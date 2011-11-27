@@ -1,22 +1,30 @@
-//Mooiter
+//HTML5_rocket
 //Copyright 2011 Christopher Massey
 //See LICENCE for details.
 
 
 //Module Pattern
-init = function()
+var init = function()
 {
+
+    var percent = 0;
     //Canvas size
     var width = 1000;
     var height = 500;
 
     var rocketx = 200;
     var rockety = 200;
+    
+    //Resources cacher
+    var resou = new ImgReady();
 
     //Images
-    var rocketImg = new Image();
-    var spaceImg = new Image();
-
+    var rocketImg = resou.addImage("images/rocket.png");
+    var spaceImg = resou.addImage("images/space.png");
+    
+    var imgCount = 0;
+    
+    
     //Setting up canvas
     var canV = document.getElementById('c');
     var ican = canV.getContext('2d');
@@ -25,11 +33,8 @@ init = function()
     canV.width = width;  
     canV.height = height;
     
+   
     
-
-    
-    
-
     //Rockect direction variables
     var upRocket = false;
     var downRocket = false;
@@ -40,18 +45,35 @@ init = function()
 
     var rotation = 0;
     
-    
-
     var speed = 0;
     
     var gloop;
     
+    var interLoad;
     
-    var loadImages = function()
+    
+    
+    
+    var loading = function()
     {
-        rocketImg.src = "images/rocket.png";
-        spaceImg.src = "images/space.png";
-    }
+        percent = resou.getPercent();
+        
+        clear();
+        ican.fillStyle = "black";
+        ican.font = "20px sans-serif";
+        ican.fillText( "loading "+percent+" %", 300, 300 );
+        
+        
+        if (percent == 100)
+        {
+            clearInterval(interLoad);
+            loopGame();
+        }
+        
+        
+    };
+    
+    
     
     var loopGame = function()
     {
@@ -68,12 +90,12 @@ init = function()
     
         gLoop = setTimeout(loopGame, 1000 / 50);
     
-    }
+    };
     
     var clear = function()
     {
         ican.clearRect(0, 0, width, height);
-    }
+    };
     
     var moveTest = function()
     {
@@ -205,11 +227,15 @@ init = function()
 
         start : function()
         {
-            loadImages();
-            loopGame();
+            loading();
+            
+            
         }
         
     };
+    
+    //Every second checks the status of resources loading
+    var interLoad = setInterval(loading, 1000);
     
 }();
 
@@ -219,10 +245,7 @@ init = function()
 window.onload = function(){
 	
     init.start();
-    //a.start();
-   
-    //a.width = 100;
-	//Keypress event
+
     document.onkeyup = init.releaseRocket;
 	document.onkeydown = init.pressRocket;
 	
