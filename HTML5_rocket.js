@@ -12,11 +12,11 @@ var init = function()
     var width = 1000;
     var height = 500;
 
-    var rocketx = 200;
-    var rockety = 200;
-    
     //Resources cacher
     var resou = new ImgReady();
+    
+    //Ship
+    var rocket = new Ship();
 
     //Images
     var rocketImg = resou.addImage("images/rocket.png");
@@ -32,20 +32,6 @@ var init = function()
     //Set Canvas size
     canV.width = width;  
     canV.height = height;
-    
-   
-    
-    //Rockect direction variables
-    var upRocket = false;
-    var downRocket = false;
-    var leftRocket = false;
-    var rightRocket = false;
-    
-    var temprotation = 0;
-
-    var rotation = 0;
-    
-    var speed = 0;
     
     var gloop;
     
@@ -82,13 +68,13 @@ var init = function()
         clear();
         ican.save();
         ican.drawImage(spaceImg, 0, 0);
-        ican.translate(rocketx/2, rockety/2);
-        ican.rotate(rotation * Math.PI / 180);
+        ican.translate(rocket.rocketx/2, rocket.rockety/2);
+        ican.rotate(rocket.rotation * Math.PI / 180);
         ican.drawImage(rocketImg, -50, -50, 100, 100);
         ican.restore();
-        moveTest();
+        rocket.shipMove();
     
-        gLoop = setTimeout(loopGame, 1000 / 50);
+        gLoop = setTimeout(loopGame, 15);
     
     };
     
@@ -96,58 +82,6 @@ var init = function()
     {
         ican.clearRect(0, 0, width, height);
     };
-    
-    var moveTest = function()
-    {
-        if (upRocket)
-        {
-            speed++;
-            temprotation = rotation;
-        }
-    
-        if (downRocket)
-        {
-            if (speed != 0) 
-                speed--;
-            
-        }
-    
-        if (leftRocket)
-        {
-            rotation -= 5;
-        }
-    
-        if (rightRocket)
-        {
-            rotation += 5;
-        }
-    
-        //calculate spaceships new position via trigonometry
-        rocketx += Math.sin(temprotation * Math.PI / 180) * speed;
-        rockety += Math.cos(temprotation * Math.PI / 180) * -speed;
-        
-        //Speed limit
-        if (Math.abs(speed) > 14)
-            speed = 14;
-
-        //Canvas border collision
-        if (rockety > canV.height * 2)
-            rockety = canV.height * 2;
-        
-        if (rocketx > canV.width * 2)
-            rocketx = canV.width * 2;
-        
-        if (rockety < 0)
-            rockety = 0;
-            
-        if (rocketx < 0)
-            rocketx = 0;
-        
-       
-    };
-    
-    
-    
     
     
     return{
@@ -169,20 +103,20 @@ var init = function()
             switch(code)
             {
                 // key down
-                case 40: downRocket = false;
+                case 40: rocket.downRocket = false;
                          break;
-                case 90: downRocket = false;
+                case 90: rocket.downRocket = false;
                          break;
                 //key up
-                case 38: upRocket = false;
+                case 38: rocket.upRocket = false;
                          break;
-                case 65: upRocket = false
+                case 65: rocket.upRocket = false
                          break;
                 //key left
-                case 37: leftRocket = false;
+                case 37: rocket.leftRocket = false;
                          break;
                 //key right
-                case 39: rightRocket = false;
+                case 39: rocket.rightRocket = false;
                          break;        
             }    
         },
@@ -207,20 +141,20 @@ var init = function()
             switch(code)
             {
                 // key down
-                case 40: downRocket = true;
+                case 40: rocket.downRocket = true;
                          break;
-                case 90: downRocket = true;
+                case 90: rocket.downRocket = true;
                          break;
                 //key up
-                case 38: upRocket = true;
+                case 38: rocket.upRocket = true;
                          break;
-                case 65: upRocket = true;
+                case 65: rocket.upRocket = true;
                          break;
                 //key left
-                case 37: leftRocket = true;
+                case 37: rocket.leftRocket = true;
                          break;
                 //key right
-                case 39: rightRocket = true;
+                case 39: rocket.rightRocket = true;
                          break;
             }
         },
