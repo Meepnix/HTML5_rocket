@@ -82,6 +82,7 @@ var Ship = (function create() {
     
     
     
+    
     return Ship;
     
         

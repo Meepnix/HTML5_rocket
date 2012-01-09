@@ -2,3 +2,6 @@ HTML5_rocket: A simple 2D game that involves piloting a rocket, created using ja
 
 Author: Christopher Massey
 Licence: MIT
+Dependencies:
+    Used as3sfxr to generate sound files
+    **http://www.superflashbros.net/as3sfxr/

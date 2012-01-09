@@ -6,7 +6,8 @@
   <title>Test</title>
   
   <style>
-  
+   * { margin: 0; padding: 0px; }
+   
    body {
    margin:0px;
    padding:0px;
@@ -19,18 +20,33 @@
    margin-left: auto;  
    margin-right: auto;  
    }
+   
+   
+   
   </style> 
   </head>
 
  <body>
   
-  <canvas id="c"></canvas>
+  <div style="width: 0%; height: 0%; top: 0%; position: relative">
+    <canvas id="bg" style="position: absolute; z-index: 0"></canvas>
+    <canvas id="fg" style="position: absolute; z-index: 1"></canvas>
+  </div>
+  
+  <div style="position: relative; width: 0%; height: 100%; top: 0%">
+     <img style="position: absolute; top: 501px; left: 450px; width: 100px" src="http://www.w3.org/html/logo/downloads/HTML5_Badge_128.png" alt="html logo">
+  </div>
+  
+  
+ 
+   
+
   <script type="text/javascript" src="HTML5_rocket_ship.js"></script>
   <script type="text/javascript" src="lib/ImgReady.js"></script>
   <script type="text/javascript" src="HTML5_rocket.js"></script>
   
   
-  <div><img src="http://www.w3.org/html/logo/downloads/HTML5_Badge_128.png" alt="html logo"></div>
+
  </body>
 </html>
   

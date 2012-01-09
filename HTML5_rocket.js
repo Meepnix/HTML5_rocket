@@ -22,20 +22,35 @@ var init = function()
     var rocketImg = resou.addImage("images/rocket.png");
     var spaceImg = resou.addImage("images/space.png");
     
+    //Sound
+    var engineAud = resou.addAudio("sounds/thrust.ogg");
+    
     var imgCount = 0;
     
     
-    //Setting up canvas
-    var canV = document.getElementById('c');
-    var ican = canV.getContext('2d');
+   //Setting up canvas foreground
+    var canFg = document.getElementById('fg');
+    var canXfg = canFg.getContext('2d');
 
-    //Set Canvas size
-    canV.width = width;  
-    canV.height = height;
+    //Setting up canvas background
+    var canBg = document.getElementById('bg');
+    var canXbg = canBg.getContext('2d');
+
+    //Set foreground canvas size
+    canFg.width = width;  
+    canFg.height = height;
+    
+    //Set background canvas size
+    canBg.width = width;
+    canBg.height = height;
     
     var gloop;
     
     var interLoad;
+    
+    var soundInt;
+    
+    var soundSet = false;
     
     
     
@@ -45,15 +60,18 @@ var init = function()
         percent = resou.getPercent();
         
         clear();
-        ican.fillStyle = "black";
-        ican.font = "20px sans-serif";
-        ican.fillText( "loading "+percent+" %", 300, 300 );
+        canXfg.fillStyle = "black";
+        canXfg.font = "20px sans-serif";
+        canXfg.fillText( "loading "+percent+" %", 300, 300 );
         
         
         if (percent == 100)
         {
             clearInterval(interLoad);
+            canXbg.drawImage(spaceImg, 0, 0);
             loopGame();
+            //Implement game sound
+            sound();
         }
         
         
@@ -63,16 +81,15 @@ var init = function()
     
     var loopGame = function()
     {
-        
-    
         clear();
-        ican.save();
-        ican.drawImage(spaceImg, 0, 0);
-        ican.translate(rocket.rocketx/2, rocket.rockety/2);
-        ican.rotate(rocket.rotation * Math.PI / 180);
-        ican.drawImage(rocketImg, -50, -50, 100, 100);
-        ican.restore();
+        canXfg.save();
+        canXfg.translate(rocket.rocketx/2, rocket.rockety/2);
+        canXfg.rotate(rocket.rotation * Math.PI / 180);
+        canXfg.drawImage(rocketImg, -50, -50, 100, 100);
+        
+        canXfg.restore();
         rocket.shipMove();
+        
     
         gLoop = setTimeout(loopGame, 15);
     
@@ -80,18 +97,37 @@ var init = function()
     
     var clear = function()
     {
-        ican.clearRect(0, 0, width, height);
+        canXfg.clearRect(0, 0, width, height);
     };
     
+    
+    var sound = function()
+    {
+        if (!soundSet)
+        {
+            soundSet = true;
+            soundInt = setInterval(thrustforSound, 90);
+        }
+       
+    };
+    
+    //directional rocket sounds
+    var thrustforSound = function()
+    {
+        if (rocket.upRocket)
+        {
+            engineAud.currentTime = 0;
+            engineAud.play();
+        }
+    };
     
     return{
         
         releaseRocket : function(e)
         {
             if (!e) e = window.event;
-    
-            var code;
-            if ((e.charCode) && (e.keyCode==0))
+                var code;
+            if ((e.charCode) && (e.keyCode == 0))
             {
                 code = e.charCode;
             }   
@@ -125,9 +161,8 @@ var init = function()
         {
             
             if (!e) e = window.event;
-        
-            var code;
-            if ((e.charCode) && (e.keyCode==0))
+                var code;
+            if ((e.charCode) && (e.keyCode == 0))
             {
                 code = e.charCode;
             
@@ -147,8 +182,10 @@ var init = function()
                          break;
                 //key up
                 case 38: rocket.upRocket = true;
+                         
                          break;
                 case 65: rocket.upRocket = true;
+                         
                          break;
                 //key left
                 case 37: rocket.leftRocket = true;
@@ -182,6 +219,7 @@ window.onload = function(){
 
     document.onkeyup = init.releaseRocket;
 	document.onkeydown = init.pressRocket;
+    document.onkeypress = init.keyRocket;
 	
     
 };
