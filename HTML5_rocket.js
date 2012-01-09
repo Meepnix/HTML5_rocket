@@ -219,7 +219,5 @@ window.onload = function(){
 
     document.onkeyup = init.releaseRocket;
 	document.onkeydown = init.pressRocket;
-    document.onkeypress = init.keyRocket;
-	
-    
+	    
 };
