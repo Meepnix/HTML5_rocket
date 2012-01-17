@@ -1,5 +1,5 @@
 //HTML5_rocket
-//Copyright 2011 Christopher Massey
+//Copyright 2011-2012 Christopher Massey
 //See LICENCE for details.
 
 
@@ -52,7 +52,11 @@ var init = function()
     
     var soundSet = false;
     
+    var refreshRate = 35;
     
+    var date = new Date();
+    
+
     
     
     var loading = function()
@@ -78,21 +82,19 @@ var init = function()
     };
     
     
-    
     var loopGame = function()
     {
+        var loopStart = date.getTime();
         clear();
         canXfg.save();
         canXfg.translate(rocket.rocketx/2, rocket.rockety/2);
         canXfg.rotate(rocket.rotation * Math.PI / 180);
         canXfg.drawImage(rocketImg, -50, -50, 100, 100);
-        
         canXfg.restore();
         rocket.shipMove();
-        
-    
-        gLoop = setTimeout(loopGame, 15);
-    
+        //Determines optimal game loop refresh rate 
+        var optimRefreshrate = Math.floor((1000 / refreshRate) - (date.getTime() - loopStart));
+        gLoop = setTimeout(loopGame, optimRefreshrate < 0 ? 0 : optimRefreshrate);
     };
     
     var clear = function()
